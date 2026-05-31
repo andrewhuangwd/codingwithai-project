@@ -6,10 +6,9 @@ import { useRef, useState } from "react";
 import { AndyEditor, type ReviewAndy } from "./AndyEditor";
 
 const CORE_QUESTIONS = [
+  "How have you been feeling lately?",
   "What are you hoping to grow or care for in the next 3 months?",
-  "What does your current week typically look like?",
   "What tends to get in the way of taking care of yourself?",
-  "What is one area where you feel proud of yourself lately?",
 ];
 
 type Phase =
@@ -172,7 +171,7 @@ export function OnboardingDiagnostic({ userId, onComplete, onReset }: Props) {
   if (phase === "core") {
     return (
       <form className="panel onboardingForm" onSubmit={handleCoreSubmit}>
-        <p className="eyebrow">Day Zero</p>
+        <p className="eyebrow">Day Zero Questionnaire</p>
         <h2>Tell us about yourself</h2>
         {CORE_QUESTIONS.map((q, i) => (
           <label key={i} className="fieldLabel">

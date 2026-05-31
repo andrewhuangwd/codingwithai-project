@@ -23,10 +23,9 @@ async function askClaude(client: Anthropic, system: string, user: string): Promi
 }
 
 const CORE_QUESTIONS = [
+  "How have you been feeling lately?",
   "What are you hoping to grow or care for in the next 3 months?",
-  "What does your current week typically look like?",
   "What tends to get in the way of taking care of yourself?",
-  "What is one area where you feel proud of yourself lately?",
 ];
 
 export const generateClarifyingQuestions = action({
