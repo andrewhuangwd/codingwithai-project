@@ -3,10 +3,11 @@ import { api } from "@/convex/_generated/api";
 import { HomeDashboard } from "@/components/HomeDashboard";
 import { NameSetupForm } from "@/components/NameSetupForm";
 import { OnboardingDiagnostic } from "@/components/OnboardingDiagnostic";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 export default function HomePage() {
   const user = useQuery(api.users.getFirstUser);
+  const deleteUser = useMutation(api.users.deleteFirstUser);
   const profile = useQuery(
     api.onboarding.getByUser,
     user ? { userId: user._id } : "skip",
@@ -48,6 +49,12 @@ export default function HomePage() {
     return (
       <main className="appShell">
         <OnboardingDiagnostic userId={user._id} onComplete={() => {}} />
+        <button
+          className="btnNewUser"
+          onClick={() => (deleteUser as any)({})}
+        >
+          Start over
+        </button>
       </main>
     );
   }
