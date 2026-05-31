@@ -47,7 +47,8 @@ export const generateClarifyingQuestions = action({
       const parsed = ClarifyingQuestionsSchema.safeParse(JSON.parse(text));
       if (!parsed.success) return { questions: [] };
       return { questions: parsed.data.questions.slice(0, 2) };
-    } catch {
+    } catch (err) {
+      console.error("[ai:generateClarifyingQuestions] error:", err);
       return { questions: [] };
     }
   },
@@ -83,7 +84,10 @@ Return JSON only:
         coreText + clarifyText,
       );
       const parsed = OnboardingRecommendationsSchema.safeParse(JSON.parse(text));
-      if (!parsed.success) return fallback();
+      if (!parsed.success) {
+        console.error("[ai:generateOnboardingRecommendations] parse failed:", JSON.stringify(parsed.error));
+        return fallback();
+      }
       return {
         ...parsed.data,
         andies: parsed.data.andies.slice(0, 3).map((a) => ({
@@ -91,7 +95,8 @@ Return JSON only:
           needs: a.needs.slice(0, 3),
         })),
       };
-    } catch {
+    } catch (err) {
+      console.error("[ai:generateOnboardingRecommendations] error:", err);
       return fallback();
     }
   },
