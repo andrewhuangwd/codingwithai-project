@@ -1,8 +1,9 @@
 type Props = {
   pluralName: string;
+  onReset: () => void;
 };
 
-export function SideNav({ pluralName }: Props) {
+export function SideNav({ pluralName, onReset }: Props) {
   return (
     <nav className="sideNav">
       <div className="sideNavHeader">
@@ -14,7 +15,9 @@ export function SideNav({ pluralName }: Props) {
           <span>🏠</span> Dashboard
         </li>
       </ul>
-      <div className="sideNavFooter">v1.0</div>
+      <div className="sideNavFooter">
+        <button className="sideNavReset" onClick={onReset}>↩ Start over</button>
+      </div>
     </nav>
   );
 }

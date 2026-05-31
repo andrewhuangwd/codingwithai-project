@@ -58,5 +58,5 @@ export default function HomePage() {
   }
 
   // Fully set up — show dashboard
-  return <HomeDashboard userId={user._id} pluralName={user.pluralName} />;
+  return <HomeDashboard userId={user._id} pluralName={user.pluralName} onReset={() => (deleteUser as any)({})} />;
 }

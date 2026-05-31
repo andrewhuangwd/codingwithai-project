@@ -151,6 +151,24 @@ ul {
   color: rgba(255, 255, 255, 0.35);
 }
 
+.sideNavReset {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.sideNavReset:hover {
+  border-color: var(--danger);
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.15);
+}
+
 /* ---- Main content (with sidebar) ---- */
 
 .mainContent {

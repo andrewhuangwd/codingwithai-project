@@ -12,9 +12,9 @@ type AndyDoc = { _id: string; name: string; dimension: string; hp: number };
 type BadgeDoc = { _id: string; badgeType: string; title: string; andyId: string };
 type InstanceDoc = { _id: string; andyId: string; status: string };
 
-type Props = { userId: string; pluralName: string };
+type Props = { userId: string; pluralName: string; onReset: () => void };
 
-export function HomeDashboard({ userId, pluralName }: Props) {
+export function HomeDashboard({ userId, pluralName, onReset }: Props) {
   const [currentDate, setCurrentDate] = useState(() => new Date());
   const dateKey = getDateKey(currentDate);
   const weekKey = getMondayWeekKey(currentDate);
@@ -56,7 +56,7 @@ export function HomeDashboard({ userId, pluralName }: Props) {
 
   return (
     <div className="appLayout">
-      <SideNav pluralName={pluralName} />
+      <SideNav pluralName={pluralName} onReset={onReset} />
 
       <main className="mainContent">
         <header className="appHeader">
