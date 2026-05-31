@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+  --ink: #243040;
+  --paper: #fff8df;
+  --field: #d7eadb;
+  --accent: #2f7d65;
+  --border: #273043;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--field);
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.appShell {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.panel {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 4px solid var(--border);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.45) inset;
+  padding: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 12px;
+  text-transform: uppercase;
+}
