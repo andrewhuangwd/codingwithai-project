@@ -23,7 +23,8 @@ async function askClaude(client: Anthropic, system: string, user: string): Promi
     messages: [{ role: "user", content: user }],
   });
   const block = msg.content[0];
-  return block.type === "text" ? block.text : "{}";
+  if (block.type !== "text") return "{}";
+  return block.text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
 }
 
 const CORE_QUESTIONS = [
