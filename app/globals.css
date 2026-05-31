@@ -44,13 +44,164 @@ ul {
   list-style: none;
 }
 
+/* ---- Sprite animations ---- */
+
+@keyframes spriteBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30%       { transform: translateY(-12px) rotate(-6deg); }
+  60%       { transform: translateY(-12px) rotate(6deg); }
+}
+
+@keyframes spriteSway {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25%       { transform: rotate(-14deg) scale(1.06); }
+  75%       { transform: rotate(14deg) scale(1.06); }
+}
+
+@keyframes spriteFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-10px) scale(1.08); }
+}
+
+@keyframes spriteNod {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  40%       { transform: translateY(-6px) scaleY(0.94); }
+  70%       { transform: translateY(-6px) scaleY(0.94); }
+}
+
 /* ---- Layout ---- */
+
+.appLayout {
+  display: flex;
+  min-height: 100vh;
+}
 
 .appShell {
   min-height: 100vh;
   padding: 24px;
   max-width: 1024px;
   margin: 0 auto;
+}
+
+/* ---- Side nav ---- */
+
+.sideNav {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--border);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sideNavHeader {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sideNavTitle {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.sideNavSubtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sideNavLinks {
+  padding: 12px 0;
+  flex: 1;
+}
+
+.sideNavItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.65);
+  transition: background 0.1s, color 0.1s;
+}
+
+.sideNavItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sideNavItemActive {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: bold;
+}
+
+.sideNavFooter {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---- Main content (with sidebar) ---- */
+
+.mainContent {
+  flex: 1;
+  padding: 24px;
+  max-width: 900px;
+  min-width: 0;
+}
+
+/* ---- Date nav ---- */
+
+.dateNavRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dateNavBtn {
+  background: none;
+  border: 2px solid var(--border);
+  padding: 2px 10px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.dateNavBtn:hover {
+  background: var(--border);
+  color: #fff;
+}
+
+.dateNavLabel {
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 96px;
+  text-align: center;
+}
+
+.dateNavToday {
+  font-size: 11px;
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.dateNavToday:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 .panel {
@@ -537,6 +688,14 @@ ul {
 
 @media (max-width: 600px) {
   .appShell {
+    padding: 12px;
+  }
+
+  .sideNav {
+    display: none;
+  }
+
+  .mainContent {
     padding: 12px;
   }
 

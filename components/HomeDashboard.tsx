@@ -1,10 +1,11 @@
 "use client";
 import { api } from "@/convex/_generated/api";
-import { getMondayWeekKey } from "@/lib/dates";
+import { getDateKey, getMondayWeekKey } from "@/lib/dates";
 import { useMutation, useQuery } from "convex/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AndyCard } from "./AndyCard";
 import { EmptyState } from "./EmptyState";
+import { SideNav } from "./SideNav";
 import { TodayPanel } from "./TodayPanel";
 
 type AndyDoc = { _id: string; name: string; dimension: string; hp: number };
@@ -14,19 +15,32 @@ type InstanceDoc = { _id: string; andyId: string; status: string };
 type Props = { userId: string; pluralName: string };
 
 export function HomeDashboard({ userId, pluralName }: Props) {
-  const weekKey = getMondayWeekKey(new Date());
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const dateKey = getDateKey(currentDate);
+  const weekKey = getMondayWeekKey(currentDate);
+  const todayKey = getDateKey(new Date());
+  const isToday = dateKey === todayKey;
+
   const andies = useQuery(api.andies.listByUser, { userId } as any) as AndyDoc[] | undefined;
   const badges = useQuery(api.badges.listByUser, { userId } as any) as BadgeDoc[] | undefined;
   const weekInstances = useQuery(api.instances.listByWeek, { userId, weekKey } as any) as InstanceDoc[] | undefined;
   const createInstances = useMutation(api.instances.createManyForWeek);
-  const instancesCreated = useRef(false);
+  const lastWeekKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!instancesCreated.current) {
-      instancesCreated.current = true;
-      (createInstances as any)({ userId, anchorDateIso: new Date().toISOString() }).catch(console.error);
+    if (lastWeekKeyRef.current !== weekKey) {
+      lastWeekKeyRef.current = weekKey;
+      (createInstances as any)({ userId, anchorDateIso: currentDate.toISOString() }).catch(console.error);
     }
-  }, [userId, createInstances]);
+  }, [weekKey, userId, currentDate, createInstances]);
+
+  function moveDate(delta: number) {
+    setCurrentDate((d) => {
+      const next = new Date(d);
+      next.setDate(next.getDate() + delta);
+      return next;
+    });
+  }
 
   const badgesByAndy: Record<string, BadgeDoc[]> = {};
   for (const andy of andies ?? []) {
@@ -41,28 +55,44 @@ export function HomeDashboard({ userId, pluralName }: Props) {
   }
 
   return (
-    <div className="appShell">
-      <header className="appHeader">
-        <h1 className="appTitle">{pluralName}</h1>
-        <p className="weekLabel">Week {weekKey}</p>
-      </header>
+    <div className="appLayout">
+      <SideNav pluralName={pluralName} />
 
-      <section className="dashboardGrid">
-        {andies === undefined && <p>Loading…</p>}
-        {andies !== undefined && andies.length === 0 && (
-          <EmptyState message="No Andies yet. Complete onboarding to get started." />
-        )}
-        {(andies ?? []).map((andy) => (
-          <AndyCard
-            key={andy._id}
-            andy={andy}
-            badges={badgesByAndy[andy._id] ?? []}
-            weekStats={weekStatsByAndy[andy._id] ?? null}
-          />
-        ))}
-      </section>
+      <main className="mainContent">
+        <header className="appHeader">
+          <div>
+            <h1 className="appTitle">Dashboard</h1>
+            <p className="weekLabel">Week of {weekKey}</p>
+          </div>
+          <div className="dateNavRow">
+            <button className="dateNavBtn" onClick={() => moveDate(-1)}>‹</button>
+            <span className="dateNavLabel">{dateKey}</span>
+            <button className="dateNavBtn" onClick={() => moveDate(1)}>›</button>
+            {!isToday && (
+              <button className="dateNavToday" onClick={() => setCurrentDate(new Date())}>
+                Today
+              </button>
+            )}
+          </div>
+        </header>
 
-      <TodayPanel userId={userId} />
+        <section className="dashboardGrid">
+          {andies === undefined && <p>Loading…</p>}
+          {andies !== undefined && andies.length === 0 && (
+            <EmptyState message="No Andies yet. Complete onboarding to get started." />
+          )}
+          {(andies ?? []).map((andy) => (
+            <AndyCard
+              key={andy._id}
+              andy={andy}
+              badges={badgesByAndy[andy._id] ?? []}
+              weekStats={weekStatsByAndy[andy._id] ?? null}
+            />
+          ))}
+        </section>
+
+        <TodayPanel userId={userId} currentDate={currentDate} />
+      </main>
     </div>
   );
 }

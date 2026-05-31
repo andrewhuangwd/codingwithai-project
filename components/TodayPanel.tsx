@@ -11,11 +11,11 @@ type Instance = {
   durationMinutes?: number;
 };
 
-type Props = { userId: string };
+type Props = { userId: string; currentDate: Date };
 
-export function TodayPanel({ userId }: Props) {
-  const todayKey = getDateKey(new Date());
-  const instances = useQuery(api.instances.listToday, { userId, dateKey: todayKey } as any) as Instance[] | undefined;
+export function TodayPanel({ userId, currentDate }: Props) {
+  const dateKey = getDateKey(currentDate);
+  const instances = useQuery(api.instances.listToday, { userId, dateKey } as any) as Instance[] | undefined;
   const markCompleted = useMutation(api.instances.markCompleted);
   const markMissed = useMutation(api.instances.markMissed);
   const [busy, setBusy] = useState<string | null>(null);
@@ -56,7 +56,7 @@ export function TodayPanel({ userId }: Props) {
 
   return (
     <div className="todayPanel panel">
-      <p className="eyebrow">Today — {todayKey}</p>
+      <p className="eyebrow">Today — {dateKey}</p>
       <h2>Today&apos;s Needs</h2>
 
       {pending.length === 0 && done.length === 0 && (
@@ -91,7 +91,7 @@ export function TodayPanel({ userId }: Props) {
                   {inst.status === "completed" ? "✓ +5 HP" : "✗ −5 HP"}
                 </span>
                 {flashing.has(inst._id) && (
-                  <span className="hpFlash" key={`flash-${inst._id}`}>+5 HP!</span>
+                  <span className="hpFlash">+5 HP!</span>
                 )}
               </li>
             ))}
