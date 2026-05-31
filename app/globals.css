@@ -476,25 +476,27 @@ ul {
   border: 2px dashed var(--border);
 }
 
-/* ---- Start over button ---- */
+/* ---- Form footer (Continue + Start over row) ---- */
 
-.btnNewUser {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 8px 14px;
-  background: var(--paper);
-  border: 2px solid var(--border);
-  color: #888;
-  font-size: 12px;
-  cursor: pointer;
-  opacity: 0.7;
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
 }
 
-.btnNewUser:hover {
-  opacity: 1;
+.btnReset {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+}
+
+.btnReset:hover {
   color: var(--danger);
-  border-color: var(--danger);
 }
 
 /* ---- Responsive ---- */

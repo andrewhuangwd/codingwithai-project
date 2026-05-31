@@ -48,13 +48,11 @@ export default function HomePage() {
   if (profile === null) {
     return (
       <main className="appShell">
-        <OnboardingDiagnostic userId={user._id} onComplete={() => {}} />
-        <button
-          className="btnNewUser"
-          onClick={() => (deleteUser as any)({})}
-        >
-          Start over
-        </button>
+        <OnboardingDiagnostic
+          userId={user._id}
+          onComplete={() => {}}
+          onReset={() => (deleteUser as any)({})}
+        />
       </main>
     );
   }

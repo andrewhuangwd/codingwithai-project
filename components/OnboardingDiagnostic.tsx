@@ -23,6 +23,7 @@ type Phase =
 type Props = {
   userId: string;
   onComplete: () => void;
+  onReset: () => void;
 };
 
 let localCounter = 0;
@@ -30,7 +31,7 @@ function nextId() {
   return `local-${++localCounter}`;
 }
 
-export function OnboardingDiagnostic({ userId, onComplete }: Props) {
+export function OnboardingDiagnostic({ userId, onComplete, onReset }: Props) {
   const [phase, setPhase] = useState<Phase>("core");
   const [coreAnswers, setCoreAnswers] = useState<string[]>(
     CORE_QUESTIONS.map(() => ""),
@@ -190,9 +191,10 @@ export function OnboardingDiagnostic({ userId, onComplete }: Props) {
           </label>
         ))}
         {errorMsg && <p className="fieldError">{errorMsg}</p>}
-        <button className="btn" type="submit">
-          Continue
-        </button>
+        <div className="formFooter">
+          <button className="btn" type="submit">Continue</button>
+          <button className="btnReset" type="button" onClick={onReset}>Start over</button>
+        </div>
       </form>
     );
   }
@@ -220,11 +222,12 @@ export function OnboardingDiagnostic({ userId, onComplete }: Props) {
           />
         </label>
         {errorMsg && <p className="fieldError">{errorMsg}</p>}
-        <button className="btn" type="submit">
-          {clarifyingIndex < clarifyingQuestions.length - 1
-            ? "Next"
-            : "Generate my Andies"}
-        </button>
+        <div className="formFooter">
+          <button className="btn" type="submit">
+            {clarifyingIndex < clarifyingQuestions.length - 1 ? "Next" : "Generate my Andies"}
+          </button>
+          <button className="btnReset" type="button" onClick={onReset}>Start over</button>
+        </div>
       </form>
     );
   }
