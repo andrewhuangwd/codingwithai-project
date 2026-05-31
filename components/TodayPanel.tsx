@@ -19,6 +19,7 @@ export function TodayPanel({ userId }: Props) {
   const markCompleted = useMutation(api.instances.markCompleted);
   const markMissed = useMutation(api.instances.markMissed);
   const [busy, setBusy] = useState<string | null>(null);
+  const [flashing, setFlashing] = useState<Set<string>>(new Set());
 
   if (instances === undefined) {
     return (
@@ -35,8 +36,19 @@ export function TodayPanel({ userId }: Props) {
   async function handle(instanceId: string, action: "complete" | "miss") {
     setBusy(instanceId);
     try {
-      if (action === "complete") await (markCompleted as any)({ needInstanceId: instanceId });
-      else await (markMissed as any)({ needInstanceId: instanceId });
+      if (action === "complete") {
+        await (markCompleted as any)({ needInstanceId: instanceId });
+        setFlashing((prev) => new Set(prev).add(instanceId));
+        setTimeout(() => {
+          setFlashing((prev) => {
+            const next = new Set(prev);
+            next.delete(instanceId);
+            return next;
+          });
+        }, 1800);
+      } else {
+        await (markMissed as any)({ needInstanceId: instanceId });
+      }
     } finally {
       setBusy(null);
     }
@@ -75,7 +87,12 @@ export function TodayPanel({ userId }: Props) {
             {done.map((inst) => (
               <li key={inst._id} className={`instanceRow instanceRow-${inst.status}`}>
                 <span className="instanceTitle">{inst.title}</span>
-                <span className="instanceStatus">{inst.status === "completed" ? "+5 HP" : "-5 HP"}</span>
+                <span className="instanceStatus">
+                  {inst.status === "completed" ? "✓ +5 HP" : "✗ −5 HP"}
+                </span>
+                {flashing.has(inst._id) && (
+                  <span className="hpFlash" key={`flash-${inst._id}`}>+5 HP!</span>
+                )}
               </li>
             ))}
           </ul>

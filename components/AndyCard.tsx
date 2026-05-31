@@ -17,6 +17,7 @@ type Props = {
     hp: number;
   };
   badges: BadgeDoc[];
+  weekStats: { completed: number; total: number } | null;
 };
 
 const HP_LABELS: Record<HpState, string> = {
@@ -29,7 +30,7 @@ const HP_LABELS: Record<HpState, string> = {
   powered_up: "Powered Up!",
 };
 
-export function AndyCard({ andy, badges }: Props) {
+export function AndyCard({ andy, badges, weekStats }: Props) {
   const hpState = getHpState(andy.hp);
 
   return (
@@ -47,9 +48,15 @@ export function AndyCard({ andy, badges }: Props) {
               />
             </div>
             <span className="hpLabel">
-              {andy.hp} — {HP_LABELS[hpState]}
+              {andy.hp} HP — {HP_LABELS[hpState]}
             </span>
           </div>
+          {weekStats !== null && weekStats.total > 0 && (
+            <span className="weekProgress">
+              {weekStats.completed}/{weekStats.total} this week
+              {weekStats.completed === weekStats.total && weekStats.total > 0 && " 🔥"}
+            </span>
+          )}
         </div>
       </div>
 

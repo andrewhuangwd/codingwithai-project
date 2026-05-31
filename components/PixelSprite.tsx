@@ -1,4 +1,4 @@
-import { getDimensionColor, getDimensionInitial } from "@/lib/sprites";
+import { getDimensionColor, getDimensionEmoji } from "@/lib/sprites";
 
 type Props = {
   dimension: string;
@@ -7,7 +7,7 @@ type Props = {
 
 export function PixelSprite({ dimension, size = 80 }: Props) {
   const color = getDimensionColor(dimension);
-  const label = getDimensionInitial(dimension);
+  const emoji = getDimensionEmoji(dimension);
 
   return (
     <div
@@ -20,13 +20,12 @@ export function PixelSprite({ dimension, size = 80 }: Props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontWeight: "bold",
-        fontSize: size * 0.3,
-        color: "#fff",
+        fontSize: size * 0.52,
         flexShrink: 0,
+        lineHeight: 1,
       }}
     >
-      {label}
+      {emoji}
     </div>
   );
 }

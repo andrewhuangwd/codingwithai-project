@@ -499,6 +499,40 @@ ul {
   color: var(--danger);
 }
 
+/* ---- HP flash animation ---- */
+
+@keyframes hpFlash {
+  0%   { opacity: 0; transform: translateY(0) scale(0.8); }
+  15%  { opacity: 1; transform: translateY(-6px) scale(1.1); }
+  70%  { opacity: 1; transform: translateY(-14px) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+}
+
+.hpFlash {
+  position: absolute;
+  right: 0;
+  top: 0;
+  animation: hpFlash 1.8s ease-out forwards;
+  color: var(--success);
+  font-weight: bold;
+  font-size: 14px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.instanceRow {
+  position: relative;
+}
+
+/* ---- Weekly progress ---- */
+
+.weekProgress {
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 4px;
+  display: block;
+}
+
 /* ---- Responsive ---- */
 
 @media (max-width: 600px) {

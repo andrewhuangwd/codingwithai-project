@@ -10,8 +10,16 @@ export function getDimensionColor(dimension: string): string {
   return "#6b7280";
 }
 
-export function getDimensionInitial(dimension: string): string {
-  return dimension.slice(0, 2).toUpperCase();
+export function getDimensionEmoji(dimension: string): string {
+  const d = dimension.toLowerCase();
+  if (d.includes("fitness")) return "🏋️";
+  if (d.includes("career")) return "💼";
+  if (d.includes("intellect")) return "🧠";
+  if (d.includes("relationship")) return "🤝";
+  if (d.includes("money")) return "💰";
+  if (d.includes("creativit")) return "🎨";
+  if (d.includes("spiritual")) return "✨";
+  return "⭐";
 }
 
 export function getBadgeLabel(badgeType: string): string {
