@@ -7,7 +7,11 @@ import { action } from "./_convex";
 
 function getClient(): Anthropic | null {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) {
+    console.error("[ai] ANTHROPIC_API_KEY is not set — using fallback");
+    return null;
+  }
+  console.log("[ai] ANTHROPIC_API_KEY found, length:", apiKey.length);
   return new Anthropic({ apiKey });
 }
 
